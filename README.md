@@ -13,4 +13,4 @@ You can download and install the JDK from the official [Oracle website](https://
 Clone this repository to your local machine using:
 
 ```bash
-git clone https://github.com/your-username/basic-java-practices.git
+git clone https://github.com/dbuntyz/java.git
