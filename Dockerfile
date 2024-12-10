@@ -1,6 +1,7 @@
 # Create a stage for resolving and downloading dependencies.
 FROM eclipse-temurin:18-jdk-jammy AS build
 
+#Set Work DIR
 WORKDIR /build
 
 # Copy the Java source file.
