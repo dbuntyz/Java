@@ -1,12 +1,19 @@
-# Create a stage for resolving and downloading dependencies.
+# Build stage
 FROM eclipse-temurin:18-jdk-jammy AS build
 
+# Set working directory
 WORKDIR /build
 
-# Copy the Java source file.
-COPY javaClass.java .
+# Copy Java source file
+COPY kkk.java .
 
-# Create a user for running the application.
+# Compile the Java source file
+RUN javac kkk.java
+
+# Runtime stage
+FROM eclipse-temurin:18-jre-jammy
+
+# Create non-root user
 ARG UID=10001
 RUN adduser \
     --disabled-password \
@@ -17,10 +24,16 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Change the ownership of the /build directory to the appuser.
-RUN chown -R appuser:appuser /build
+# Switch to non-root user
 USER appuser
 
-# Compile the Java source file.
-RUN javac javaClass.java
-CMD ["java", "-Djava.util.prefs.systemRoot=/dev/null", "javaClass"]
+# Copy compiled Java classes from the build stage
+WORKDIR /app
+COPY --from=build /build/kkk.class .
+
+# Expose required port (if the application runs on a port)
+# EXPOSE 8080 # Uncomment if applicable
+
+# Entry point for the application
+ENTRYPOINT ["java"]
+CMD ["-Djava.util.prefs.systemRoot=/dev/null", "kkk"]
